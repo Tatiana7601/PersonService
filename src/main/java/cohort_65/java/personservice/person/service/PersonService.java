@@ -13,11 +13,11 @@ public interface PersonService {
 
     PersonDto updatePersonAddress(Integer id, AddressDto addressDto);
 
-    PersonDto[] findPersonsByCity(String city);
+    Iterable <PersonDto> findPersonsByCity(String city);
 
-    PersonDto[] findPersonsByName(String name);
+    Iterable <PersonDto> findPersonsByName(String name);
 
-    PersonDto[] findPersonsBetweenAge(Integer from, Integer to);
+    Iterable <PersonDto>findPersonsBetweenAge(Integer from, Integer to);
 
     Iterable<CityPopulationDto> getCityPopulation();
 

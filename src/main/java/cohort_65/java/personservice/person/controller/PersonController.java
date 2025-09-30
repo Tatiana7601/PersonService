@@ -1,4 +1,4 @@
-package cohort_65.java.personservice.person.contoller;
+package cohort_65.java.personservice.person.controller;
 
 import cohort_65.java.personservice.person.dto.*;
 import cohort_65.java.personservice.person.service.PersonService;
@@ -38,17 +38,17 @@ public class PersonController {
     }
 
     @GetMapping("/city/{city}")
-    public PersonDto[] findPersonsByCity(@PathVariable String city) {
+    public Iterable<PersonDto> findPersonsByCity(@PathVariable String city) {
         return personService.findPersonsByCity(city);
     }
 
     @GetMapping("/name/{name}")
-    public PersonDto[] findPersonsByName(@PathVariable String name) {
+    public Iterable<PersonDto> findPersonsByName(@PathVariable String name) {
         return personService.findPersonsByName(name);
     }
 
     @GetMapping("/ages/{from}/{to}")
-    public PersonDto[] findPersonsBetweenAge(@PathVariable Integer from, @PathVariable Integer to) {
+    public Iterable<PersonDto> findPersonsBetweenAge(@PathVariable Integer from, @PathVariable Integer to) {
         return personService.findPersonsBetweenAge(from,to);
     }
 

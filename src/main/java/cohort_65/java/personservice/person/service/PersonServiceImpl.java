@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,24 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
 
     final PersonRepository personRepository;
     final ModelMapper modelMapper;
+
+    private PersonDto mapPersonToDto(Person person) {
+        if(person instanceof Child){
+            return modelMapper.map( person, ChildDto.class);
+        } else if(person instanceof Employee) {
+            return modelMapper.map(person, EmployeeDto.class);
+        }else {
+            return modelMapper.map(person, PersonDto.class);
+        }
+    }
+
+    private List<PersonDto> mapPersonListToDtoList(List<? extends Person> persons) {
+        return persons.stream()
+                .map(this::mapPersonToDto)
+                .toList();
+        }
+
+
 
     @Override
     public boolean addPerson(PersonDto personDto) {
@@ -33,14 +52,14 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
     @Override
     public PersonDto findPersonById(Integer id) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
-        return modelMapper.map(person, PersonDto.class);
+        return  mapPersonToDto(person);
     }
 
     @Override
     public PersonDto removePersonById(Integer id) {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
         personRepository.delete(person);
-        return modelMapper.map(person, PersonDto.class);
+        return  mapPersonToDto(person);
     }
 
     @Override
@@ -48,7 +67,7 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
         Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
         person.setName(name);
         personRepository.save(person);
-        return modelMapper.map(person, PersonDto.class);
+        return mapPersonToDto(person);
     }
 
     @Override
@@ -59,34 +78,26 @@ public class PersonServiceImpl implements PersonService, CommandLineRunner {
         }
         person.setAddress(modelMapper.map(addressDto, Address.class));
         personRepository.save(person);
-        return modelMapper.map(person, PersonDto.class);
+        return mapPersonToDto(person);
     }
 
     @Override
-    public PersonDto[] findPersonsByCity(String city) {
-        return personRepository.findByAddressCityIgnoreCase(city)
-                .stream()
-                .map(person -> modelMapper.map(person, PersonDto.class))
-                .toArray(PersonDto[]::new);
+    public List<PersonDto> findPersonsByCity(String city) {
+        return mapPersonListToDtoList(personRepository.findByAddressCityIgnoreCase(city));
+
     }
 
     @Override
-    public PersonDto[] findPersonsByName(String name) {
-        return personRepository.findByNameIgnoreCase(name)
-                .stream()
-                .map(person -> modelMapper.map(person, PersonDto.class))
-                .toArray(PersonDto[]::new);
+    public List<PersonDto>findPersonsByName(String name) {
+        return mapPersonListToDtoList(personRepository.findByNameIgnoreCase(name));
     }
 
     @Override
-    public PersonDto[] findPersonsBetweenAge(Integer minAge, Integer maxAge) {
+    public List<PersonDto> findPersonsBetweenAge(Integer minAge, Integer maxAge) {
         LocalDate fromDate = LocalDate.now().minusYears(maxAge);
         LocalDate toDate = LocalDate.now().minusYears(minAge);
 
-        return personRepository.findByBirthDateBetween(fromDate,toDate)
-                .stream()
-                .map(person -> modelMapper.map(person, PersonDto.class))
-                .toArray(PersonDto[]::new);
+        return mapPersonListToDtoList(personRepository.findByBirthDateBetween(fromDate, toDate));
     }
 
     @Override
