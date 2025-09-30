@@ -1,8 +1,6 @@
 package cohort_65.java.personservice.person.contoller;
 
-import cohort_65.java.personservice.person.dto.AddressDto;
-import cohort_65.java.personservice.person.dto.CityPopulationDto;
-import cohort_65.java.personservice.person.dto.PersonDto;
+import cohort_65.java.personservice.person.dto.*;
 import cohort_65.java.personservice.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -58,4 +56,16 @@ public class PersonController {
     public Iterable<CityPopulationDto> getCityPopulation() {
         return personService.getCityPopulation();
     }
+
+    @GetMapping("/salary/{min}/{max}")
+    public Iterable<EmployeeDto> findEmployeeBySalary(@PathVariable Integer min, @PathVariable Integer max) {
+        return personService.findEmployeeBySalary(min, max);
+    }
+
+    @GetMapping("/children")
+    public Iterable<ChildDto> findAllChildren() {
+        return personService.findAllChildren();
+    }
+
+
 }

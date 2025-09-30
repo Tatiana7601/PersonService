@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1759226790693-1
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            tableName: person
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_person
+                  name: id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: dtype
+                  type: VARCHAR(31)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: birth_date
+                  type: DATE
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: building
+                  type: INT
+              - column:
+                  name: company
+                  type: VARCHAR(255)
+              - column:
+                  name: salary
+                  type: INT
+              - column:
+                  name: kindergarten
+                  type: VARCHAR(255)
+            tableName: person
+

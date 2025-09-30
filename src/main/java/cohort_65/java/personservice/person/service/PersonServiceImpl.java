@@ -1,21 +1,22 @@
 package cohort_65.java.personservice.person.service;
 
 import cohort_65.java.personservice.person.dao.PersonRepository;
-import cohort_65.java.personservice.person.dto.AddressDto;
-import cohort_65.java.personservice.person.dto.CityPopulationDto;
-import cohort_65.java.personservice.person.dto.PersonDto;
+import cohort_65.java.personservice.person.dto.*;
 import cohort_65.java.personservice.person.dto.exception.PersonNotFoundException;
 import cohort_65.java.personservice.person.model.Address;
+import cohort_65.java.personservice.person.model.Child;
+import cohort_65.java.personservice.person.model.Employee;
 import cohort_65.java.personservice.person.model.Person;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class PersonServiceImpl implements PersonService {
+public class PersonServiceImpl implements PersonService, CommandLineRunner {
 
     final PersonRepository personRepository;
     final ModelMapper modelMapper;
@@ -92,4 +93,43 @@ public class PersonServiceImpl implements PersonService {
     public Iterable<CityPopulationDto> getCityPopulation() {
         return personRepository.getCityPopulation();
     }
+
+    @Override
+    public Iterable<EmployeeDto> findEmployeeBySalary(Integer min, Integer max) {
+        return personRepository.findEmployeesBySalaryBetween(min,max)
+                .stream()
+                .map(emp -> modelMapper.map(emp,EmployeeDto.class))
+                .toList();
+    }
+
+    @Override
+    public Iterable<ChildDto> findAllChildren() {
+        return personRepository.findAllChildrenQuery()
+                .stream()
+                .map(child -> modelMapper.map(child, ChildDto.class))
+                .toList();
+
+    }
+
+
+    @Override
+    public void run(String... args) throws Exception {
+        if (personRepository.count() == 0) {
+            Person person = new Person(1000, "John",
+                    LocalDate.now().minusYears(20), new Address("Berlin", "Kantstr", 20));
+            Child child = new Child(2000,
+                    "Peter",
+                    LocalDate.now().minusYears(5),
+                    new Address("Berlin", "KantStr", 33),
+                    "Kindergarten");
+            Employee employee = new Employee(3000, "Karl", LocalDate.now().minusYears(30),
+                    new Address("Berlin", "KantStr", 63),
+                    "Apple", 8000);
+            personRepository.save(person);
+            personRepository.save(child);
+            personRepository.save(employee);
+        }
+    }
+
 }
+

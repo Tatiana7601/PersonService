@@ -1,8 +1,6 @@
 package cohort_65.java.personservice.person.service;
 
-import cohort_65.java.personservice.person.dto.AddressDto;
-import cohort_65.java.personservice.person.dto.CityPopulationDto;
-import cohort_65.java.personservice.person.dto.PersonDto;
+import cohort_65.java.personservice.person.dto.*;
 
 public interface PersonService {
     boolean addPerson(PersonDto personDto);
@@ -22,4 +20,8 @@ public interface PersonService {
     PersonDto[] findPersonsBetweenAge(Integer from, Integer to);
 
     Iterable<CityPopulationDto> getCityPopulation();
+
+    Iterable<EmployeeDto> findEmployeeBySalary(Integer min, Integer max);
+
+    Iterable<ChildDto> findAllChildren();
 }
