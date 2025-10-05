@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1759308705639-1
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            tableName: person
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_child
+                  name: id
+                  type: INT
+              - column:
+                  name: kindergarten
+                  type: VARCHAR(255)
+            tableName: child
+  - changeSet:
+      id: 1759308705639-2
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_employee
+                  name: id
+                  type: INT
+              - column:
+                  name: company
+                  type: VARCHAR(255)
+              - column:
+                  name: salary
+                  type: INT
+            tableName: employee
+  - changeSet:
+      id: 1759308705639-3
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_person
+                  name: id
+                  type: INT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: birth_date
+                  type: DATE
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: street
+                  type: VARCHAR(255)
+              - column:
+                  name: building
+                  type: INT
+            tableName: person
+  - changeSet:
+      id: 1759308705639-4
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: child
+            constraintName: FK_CHILD_ON_ID
+            referencedColumnNames: id
+            referencedTableName: person
+  - changeSet:
+      id: 1759308705639-5
+      author: palta
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: employee
+            constraintName: FK_EMPLOYEE_ON_ID
+            referencedColumnNames: id
+            referencedTableName: person
+
