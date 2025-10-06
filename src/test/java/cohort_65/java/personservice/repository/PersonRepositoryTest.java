@@ -1,5 +1,6 @@
-package cohort_65.java.personservice.person.dao;
+package cohort_65.java.personservice.repository;
 
+import cohort_65.java.personservice.person.dao.PersonRepository;
 import cohort_65.java.personservice.person.dto.CityPopulationDto;
 import cohort_65.java.personservice.person.model.Address;
 import cohort_65.java.personservice.person.model.Child;
